@@ -1,0 +1,37 @@
+service: danielmolina-authorizer
+frameworkVersion: '2'
+useDotenv: true
+provider:
+    name: aws
+    runtime: nodejs12.x
+    lambdaHashingVersion: 20201221
+    stage: prod
+    region: eu-west-1
+
+plugins:
+    - serverless-offline
+
+package:
+    individually: true
+    exclude:
+        - ./**
+        - '!node_modules/**'
+    include:
+        - package.json
+        - package-lock.json
+        - src/**
+
+functions:
+    danielmolina-authorizer-service:
+        handler: src/index.handler
+        name: ${self:service}
+        environment:
+            NODE_ENV: production
+            SYMMETRIC_KEY: ${ssm:danielmolina-symmetric-key}
+
+custom:
+    serverless-offline:
+        stage: 'dev'
+        httpPort: 8083
+        noAuth: true
+        lambdaPort: 3003
