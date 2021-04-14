@@ -68,7 +68,7 @@ const decodeAndVerifyTokenHS256 = async (token) => {
 };
 
 const generateUserPolicy = (event, userId) => {
-    return generatePolicy(userId, null, 'Allow', event.methodArn);
+    return generatePolicy(userId, 'Allow', event.methodArn);
 };
 
 // Help function to generate an IAM policy
